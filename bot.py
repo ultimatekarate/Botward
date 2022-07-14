@@ -34,6 +34,12 @@ async def on_message(message):
   if 'Botward, do you posses karate?' in message.content:
     await message.channel.send('My karate is _ultimate_.')
 
+@bot.command(pass_context=True)
+async def reload_mapping(ctx):
+  CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
+  message = "Character mapping has been updated."
+  name_embed = discord.Embed(title='MAPPING UPDATE',description=message,color=0x0000FF)
+  await ctx.channel.send(embed=name_embed)
 
 @bot.command(pass_context=True)
 async def attendance(ctx, channel_name=None, raid_mob=None):
