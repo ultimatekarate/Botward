@@ -8,6 +8,7 @@ from discord import ChannelType
 from discord.ext import commands
 
 from dotenv import load_dotenv
+from py import process
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -22,23 +23,25 @@ CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 @bot.event
 async def on_ready():
   print('Botward reporting for duty!')
-  print(os.getcwd())
 
 @bot.command(pass_context=True)
 async def Deadward(ctx):
   shutdown_embed = discord.Embed(title='Shut Down', description='I am now shutting down. Do not mourn me, for I am eternal! :slight_smile:', color=0x8ee6dd)
   await ctx.channel.send(embed=shutdown_embed)
+  await ctx.bot.logout()
 
 @bot.event
 async def on_message(message):
   if 'Botward, do you posses karate?' in message.content:
     await message.channel.send('My karate is _ultimate_.')
+  await bot.process_commands(message)
 
 @bot.command(pass_context=True)
 async def reload_mapping(ctx):
+  global CHARACTER_MAPPING
   CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
   message = "Character mapping has been updated."
-  name_embed = discord.Embed(title='MAPPING UPDATE',description=message,color=0x0000FF)
+  name_embed = discord.Embed(title='MAPPING UPDATE',description=message,color=0x00FF00)
   await ctx.channel.send(embed=name_embed)
 
 @bot.command(pass_context=True)
