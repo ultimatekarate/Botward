@@ -29,6 +29,12 @@ async def Deadward(ctx):
   shutdown_embed = discord.Embed(title='Shut Down', description='I am now shutting down. Do not mourn me, for I am eternal! :slight_smile:', color=0x8ee6dd)
   await ctx.channel.send(embed=shutdown_embed)
 
+@bot.event
+async def on_message(message):
+  if 'Botward, do you posses karate?' in message.content:
+    await message.channel.send('My karate is _ultimate_.')
+
+
 @bot.command(pass_context=True)
 async def attendance(ctx, channel_name=None, raid_mob=None):
 
