@@ -8,7 +8,6 @@ from discord import ChannelType
 from discord.ext import commands
 
 from dotenv import load_dotenv
-from py import process
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
