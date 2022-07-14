@@ -38,6 +38,7 @@ async def on_message(message):
 
 @bot.command(pass_context=True)
 async def reload_mapping(ctx):
+  # This function reloads the character mapping file.
   global CHARACTER_MAPPING
   CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
   message = "Character mapping has been updated."
