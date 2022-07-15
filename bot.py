@@ -53,7 +53,7 @@ async def on_message(message):
 
 @bot.command(pass_context=True)
 async def questions(ctx):
-  message = QUESTIONS.keys().join('\n')
+  message = list(QUESTIONS.keys()).join('\n')
   embed = discord.Embed(title='BOTWARD\'S SECRET KNOWLEDGE',description=message,color=0xFF000)
   await ctx.channel.send(embed=embed)
 
