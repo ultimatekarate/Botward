@@ -2,13 +2,15 @@
 import os
 import json
 import datetime
+from dotenv import load_dotenv
 
 import discord
 from discord import ChannelType
 from discord.ext import commands
 
-TOKEN = 'OTk2NDY3ODM1NTMyNDk2OTY2.G6x_po.KN1b-jQOcdtktgM6j7QXyWS-0VORCHZU0hPmZk'
-GUILD = 'BGToolsTestServer'
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
 MAPPING_FILE ='character_mapping.json'
 
 intents = discord.Intents().all()
