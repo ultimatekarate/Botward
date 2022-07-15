@@ -7,9 +7,9 @@ import discord
 from discord import ChannelType
 from discord.ext import commands
 
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
-MAPPING_FILE = os.getenv('CHARACTER_MAPPING')
+TOKEN = 'OTk2NDY3ODM1NTMyNDk2OTY2.G6x_po.KN1b-jQOcdtktgM6j7QXyWS-0VORCHZU0hPmZk'
+GUILD = 'BGToolsTestServer'
+MAPPING_FILE ='character_mapping.json'
 
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Botward things.",intents=intents)
@@ -17,8 +17,9 @@ bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Bot
 CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 
 @bot.event
-async def on_ready():
+async def on_ready(ctx):
   print('Botward reporting for duty!')
+  await ctx.channel.send('BOTWARD LIVES!')
 
 @bot.command(pass_context=True)
 async def Deadward(ctx):
