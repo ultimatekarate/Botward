@@ -17,7 +17,7 @@ intents = discord.Intents().all()
 bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Botward things.",intents=intents)
 
 CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
-EMBEZZLE_FLAG = true
+EMBEZZLE_FLAG = True
 
 QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way off!',
 'Botward, do you posses karate?':'My karate is _ultimate_',
