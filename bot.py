@@ -21,6 +21,7 @@ CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way off!',
 'Botward, do you posses karate?':'My karate is _ultimate_',
 'Botward, who is the guild #1 sk?':'Tugmuk, obviously.',
+'Botward, what is concussion?':'Literally the best spell in the game.',
 'Botward, does this situation require more blasting?':'All situations require blasting.',
 'Botward, who should own the means of production?':'The workers, obviously. They have nothing to lose but their chains.'}
 
