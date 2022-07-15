@@ -23,6 +23,7 @@ QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way
 'Botward, who is the guild #1 sk?':'Tugmuk, obviously.',
 'Botward, what is concussion?':'Literally the best spell in the game.',
 'Botward, who pulled that train?':'Fayne.',
+'Botward, what did Emptyplate just say?':'Sorry, I am unable to parse unitelligible grumbling.',
 'Botward, does this situation require more blasting?':'All situations require blasting.',
 'Botward, who should own the means of production?':'The workers, obviously. They have nothing to lose but their chains.'}
 
