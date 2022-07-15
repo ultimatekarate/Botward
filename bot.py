@@ -37,7 +37,7 @@ async def tosh(ctx):
 async def Deadward(ctx):
   shutdown_embed = discord.Embed(title='Shut Down', description='I am now shutting down. Do not mourn me, for I am eternal! :slight_smile:', color=0x8ee6dd)
   await ctx.channel.send(embed=shutdown_embed)
-  await ctx.bot.logout()
+  await ctx.bot.close()
 
 @bot.event
 async def on_message(message):
