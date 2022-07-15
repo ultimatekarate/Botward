@@ -24,7 +24,7 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def tosh(ctx):
-  ctx.channel.send('Updated!')
+  await ctx.channel.send('Updated!')
 
 @bot.command(pass_context=True)
 async def Deadward(ctx):
