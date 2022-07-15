@@ -53,10 +53,10 @@ async def on_message(message):
 
 @bot.command(pass_context=True)
 async def questions(ctx):
-  message = QUESTIONS.keys.join('\n')
+  message = QUESTIONS.keys().join('\n')
   embed = discord.Embed(title='BOTWARD\'S SECRET KNOWLEDGE',description=message,color=0xFF000)
   await ctx.channel.send(embed=embed)
-  
+
 @bot.command(pass_context=True)
 async def reload_mapping(ctx):
   # This function reloads the character mapping file.
