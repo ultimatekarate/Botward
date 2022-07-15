@@ -21,7 +21,10 @@ CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 @bot.event
 async def on_ready(ctx):
   print('Botward reporting for duty!')
-  await ctx.channel.send('BOTWARD LIVES!')
+
+@bot.command(pass_context=True)
+async def tosh(ctx):
+  ctx.channel.send('Updated!')
 
 @bot.command(pass_context=True)
 async def Deadward(ctx):
