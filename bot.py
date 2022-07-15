@@ -10,7 +10,7 @@ from discord.ext import commands
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+GUILD = [guild for guild in os.getenv('DISCORD_GUILD').split(',')]
 MAPPING_FILE ='character_mapping.json'
 
 intents = discord.Intents().all()
@@ -21,6 +21,7 @@ CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 @bot.event
 async def on_ready():
   print('Botward reporting for duty!')
+  print('current wd:',os.getcwd())
 
 @bot.command(pass_context=True)
 async def tosh(ctx):
