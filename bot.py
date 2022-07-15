@@ -75,11 +75,11 @@ async def embezzle(ctx,status=None):
   if status is None:
     message = 'Embezzle status: '+EMBEZZLE_FLAG
 
-  if status is 'on':
+  if status == 'on':
     EMBEZZLE_FLAG = True
     await ctx.channel.send('DKP Embezzling enabled.')
 
-  if status is 'off':
+  if status == 'off':
     EMBEZZLE_FLAG = False
     await ctx.channel.send('DKP Embezzling disabled.')
   
