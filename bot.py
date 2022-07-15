@@ -68,22 +68,6 @@ async def reload_mapping(ctx):
   await ctx.channel.send(embed=name_embed)
 
 @bot.command(pass_context=True)
-async def embezzle(ctx,status=None):
-  global EMBEZZLE_FLAG
-
-  if status is None:
-    message = 'Embezzle status: '+str(EMBEZZLE_FLAG)
-    await ctx.channel.send(message)
-    
-  if status == 'on':
-    EMBEZZLE_FLAG = True
-    await ctx.channel.send('DKP Embezzling enabled.')
-
-  if status == 'off':
-    EMBEZZLE_FLAG = False
-    await ctx.channel.send('DKP Embezzling disabled.')
-  
-@bot.command(pass_context=True)
 async def attendance(ctx, channel_name=None, raid_mob=None):
 
     if channel_name is None or raid_mob is None:
