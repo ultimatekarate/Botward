@@ -7,9 +7,6 @@ import discord
 from discord import ChannelType
 from discord.ext import commands
 
-from dotenv import load_dotenv
-
-load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 MAPPING_FILE = os.getenv('CHARACTER_MAPPING')
