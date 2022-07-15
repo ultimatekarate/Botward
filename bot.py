@@ -19,7 +19,7 @@ bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Bot
 CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 
 @bot.event
-async def on_ready(ctx):
+async def on_ready():
   print('Botward reporting for duty!')
 
 @bot.command(pass_context=True)
