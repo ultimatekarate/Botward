@@ -20,6 +20,7 @@ CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 
 QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way off!',
 'Botward, do you posses karate?':'My karate is _ultimate_',
+'Botward, who is the guild #1 sk?':'Tugmuk, obviously.',
 'Botward, who should own the means of production?':'The workers, obviously. They have nothing to lose but their chains.'}
 
 @bot.event
@@ -30,7 +31,6 @@ async def on_ready():
 @bot.command(pass_context=True)
 async def tosh(ctx):
   await ctx.channel.send("Dark elf warriors are #1!")
-  await ctx.channel.send('Updated!')
 
 @bot.command(pass_context=True)
 async def Deadward(ctx):
@@ -42,8 +42,7 @@ async def Deadward(ctx):
 async def on_message(message):
   if message.content in QUESTIONS:
     await message.channel.send(QUESTIONS[message.content])
-  else:
-    await message.channel.send('I do not know the answer to your question ' + message.author.nick)
+
   await bot.process_commands(message)
 
 @bot.command(pass_context=True)
