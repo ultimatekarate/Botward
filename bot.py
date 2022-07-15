@@ -11,12 +11,16 @@ from discord.ext import commands
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = [guild for guild in os.getenv('DISCORD_GUILD').split(',')]
-MAPPING_FILE ='character_mapping.json'
+MAPPING_FILE = 'character_mapping.json'
 
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Botward things.",intents=intents)
 
 CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
+
+QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way off!',
+'Botward, do you posses karate?':'My karate is _ultimate_',
+'Botward, who should own the means of production?':'The workers, obviously. They have nothing to lose but their chains.'}
 
 @bot.event
 async def on_ready():
@@ -35,8 +39,10 @@ async def Deadward(ctx):
 
 @bot.event
 async def on_message(message):
-  if 'Botward, do you posses karate?' in message.content:
-    await message.channel.send('My karate is _ultimate_.')
+  if message.content in QUESTIONS:
+    await message.channel.send(QUESTIONS[message.content])
+  else:
+    await message.channel.send('I do not know the answer to your question ' + message.author.nick)
   await bot.process_commands(message)
 
 @bot.command(pass_context=True)
