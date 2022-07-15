@@ -25,6 +25,7 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def tosh(ctx):
+  await ctx.channel.send("Dark elf warriors are #1!")
   await ctx.channel.send('Updated!')
 
 @bot.command(pass_context=True)
