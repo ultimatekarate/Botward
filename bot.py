@@ -42,7 +42,7 @@ async def Deadward(ctx):
 @bot.event
 async def on_message(message):
   if message.content in QUESTIONS:
-    await message.channel.send(QUESTIONS[message.content])
+    await message.reply(QUESTIONS[message.content])
 
   await bot.process_commands(message)
 
