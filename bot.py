@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import discord
 from discord import ChannelType
 from discord.ext import commands
+from sqlalchemy import true
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -17,6 +18,7 @@ intents = discord.Intents().all()
 bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Botward things.",intents=intents)
 
 CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
+EMBEZZLE_FLAG = true
 
 QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way off!',
 'Botward, do you posses karate?':'My karate is _ultimate_',
@@ -66,6 +68,21 @@ async def reload_mapping(ctx):
   name_embed = discord.Embed(title='MAPPING UPDATE',description=message,color=0x00FF00)
   await ctx.channel.send(embed=name_embed)
 
+@bot.command(pass_context=True)
+async def embezzle(ctx,status=None):
+  global EMBEZZLE_FLAG
+
+  if status is None:
+    message = 'Embezzle status: '+EMBEZZLE_FLAG
+
+  if status is 'on':
+    EMBEZZLE_FLAG = True
+    await ctx.channel.send('DKP Embezzling enabled.')
+
+  if status is 'off':
+    EMBEZZLE_FLAG = False
+    await ctx.channel.send('DKP Embezzling disabled.')
+  
 @bot.command(pass_context=True)
 async def attendance(ctx, channel_name=None, raid_mob=None):
 
