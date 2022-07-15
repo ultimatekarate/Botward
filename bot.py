@@ -72,7 +72,7 @@ async def embezzle(ctx,status=None):
   global EMBEZZLE_FLAG
 
   if status is None:
-    message = 'Embezzle status: '+EMBEZZLE_FLAG
+    message = 'Embezzle status: '+str(EMBEZZLE_FLAG)
 
   if status == 'on':
     EMBEZZLE_FLAG = True
