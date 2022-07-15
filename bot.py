@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 import discord
 from discord import ChannelType
 from discord.ext import commands
-from sqlalchemy import true
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
