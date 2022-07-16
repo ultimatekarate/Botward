@@ -22,7 +22,7 @@ EMBEZZLE_FLAG = True
 QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way off!',
 'Botward, do you posses karate?':'My karate is _ultimate_',
 'Botward, what is Xaiterlyn screaming in discord?':'Some nonsense about putting horses in corners.',
-'Botward, what is the guild motto?':'!motto',
+'Botward, what is the guild motto?':'Fuck it, let\'s see what happens!',
 'Botward, who is the guild #1 sk?':'Tugmuk, obviously.',
 'Botward, what is concussion?':'Literally the best spell in the game.',
 'Botward, who pulled that train?':'Fayne.',
