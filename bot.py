@@ -43,7 +43,7 @@ async def tosh(ctx):
 
 @bot.command(pass_context=True)
 async def motto(ctx):
-  embed_message = discord.Embed(title='BLOOD GUARD MOTTO',description='**FUCK IT, LET\'S SEE WHAT HAPPENS!')
+  embed_message = discord.Embed(title='BLOOD GUARD MOTTO',description='**FUCK IT, LET\'S SEE WHAT HAPPENS!**',color=0xDD1200)
   await ctx.channel.send(embed=embed_message)
 
 @bot.command(pass_context=True)
