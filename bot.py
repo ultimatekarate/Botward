@@ -26,6 +26,7 @@ QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way
 'Botward, who is the guild #1 sk?':'Tugmuk, obviously.',
 'Botward, what is concussion?':'Literally the best spell in the game.',
 'Botward, who pulled that train?':'Fayne.',
+'Botward, who is the #1 druid?':'Grimmskld. The real one, not the bootleg Fayne version.',
 'Botward, who is that handsome-ass high elf?':'Arther. :heart_eyes: :heart_eyes: :heart_eyes:  ',
 'Botward, who is the biggest tool in BG?': 'It is a violation of guild rules to answer this. (But we all know it\'s Bakastabs- respectfully, of course.)',
 'Botward, can Bakamez\'s assist please get a malo?':'No, the Malo nerds are on strike.',
