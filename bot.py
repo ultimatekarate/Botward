@@ -77,6 +77,17 @@ async def reload_mapping(ctx):
   await ctx.channel.send(embed=name_embed)
 
 @bot.command(pass_context=True)
+async def show_mapping(ctx):
+  mapping_list = []
+  for member_name in sorted(CHARACTER_MAPPING,key=CHARACTER_MAPPING.get):
+    temp_str=member_name+':'+CHARACTER_MAPPING[member_name]
+    mapping_list.append(temp_str)
+
+  message='\n'.join(mapping_list)
+  name_embed = discord.Embed(title='Character Name Mapping',description=message,color=0x00FF00)
+  await ctx.channel.send(embed=name_embed)
+
+@bot.command(pass_context=True)
 async def attendance(ctx, channel_name=None, raid_mob=None):
 
     if channel_name is None or raid_mob is None:
