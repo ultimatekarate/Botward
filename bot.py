@@ -98,7 +98,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None):
 
     for channel in ctx.guild.voice_channels:
         if channel.name == channel_name:
-            f_name = raid_mob+'.csv'
+            f_name = '/home/container/attendance_logs/'+raid_mob+'.csv'
             attendance_file = open(f_name,'w+')
 
             for member in channel.members:
