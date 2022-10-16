@@ -123,7 +123,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
 
           dkp_name = CHARACTER_MAPPING.get(member_name)
 
-          if not char:
+          if not dkp_name:
             message = "Discord name " + member_name + " was not found in the mapping."
             name_embed = discord.Embed(title='NAME NOT FOUND',description = message,color=0xFF0000)
             await ctx.channel.send(embed=name_embed)
