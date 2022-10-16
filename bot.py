@@ -87,58 +87,58 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
 
         await ctx.send(file=file, content=attachment_message)
         return
-    if guild_name == 'Paragon' or 'BGToolsTestServer':
-      if channel_name is None or raid_mob is None or tick_type is None:
-        message = "Use the following command to take attendance: \n **!attendance \"<voice channel>\" \"<raid name>\"  \"<tick type>\"**"
-        name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
-        await ctx.channel.send(embed=name_embed)
-        return
-      if tick_type not in ['hourly', 'ontime', 'raidend']:
-        message = "tick type must be one of the following: **hourly, ontime, raidend**"
-        name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
-        await ctx.channel.send(embed=name_embed)
-        return
+  if guild_name == 'Paragon' or 'BGToolsTestServer':
+    if channel_name is None or raid_mob is None or tick_type is None:
+      message = "Use the following command to take attendance: \n **!attendance \"<voice channel>\" \"<raid name>\"  \"<tick type>\"**"
+      name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+      return
+    if tick_type not in ['hourly', 'ontime', 'raidend']:
+      message = "tick type must be one of the following: **hourly, ontime, raidend**"
+      name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+      return
 
-      for channel in ctx.guild.voice_channels:
-        if channel.name == channel_name:
-          raid_time = datetime.datetime.now().strftime('%D %H:%M')
-          #f_path = f'/home/container/attendance_logs/{guild_name}/{raid_mob}/'
+    for channel in ctx.guild.voice_channels:
+      if channel.name == channel_name:
+        raid_time = datetime.datetime.now().strftime('%D %H:%M')
+        #f_path = f'/home/container/attendance_logs/{guild_name}/{raid_mob}/'
 
-          f_path = f'/attendance_logs/{guild_name}/{raid_mob}/'
-          f_name = f'{tick_type}_{raid_time}.csv'
+        f_path = f'/attendance_logs/{guild_name}/{raid_mob}/'
+        f_name = f'{tick_type}_{raid_time}.csv'
 
-          full_path = f_path + f_name
-          if os.path.exists(f_path):
-            os.makedirs(f_path)
+        full_path = f_path + f_name
+        if os.path.exists(f_path):
+          os.makedirs(f_path)
           
-          attendance_file = open(full_path,'w+')
+        attendance_file = open(full_path,'w+')
 
-          members_present = [member.name + '#' + member.discriminator for member in channel.members]
+        members_present = [member.name + '#' + member.discriminator for member in channel.members]
 
-          for member_name in CHARACTER_MAPPING:
+        for member_name in CHARACTER_MAPPING:
 
-            tick_value = 0
-            if member_name in members_present:
-              tick_value = 1
+          tick_value = 0
+          if member_name in members_present:
+            tick_value = 1
 
-            dkp_name = CHARACTER_MAPPING.get(member_name)
+          dkp_name = CHARACTER_MAPPING.get(member_name)
 
-            if not char:
-              message = "Discord name " + member_name + " was not found in the mapping."
-              name_embed = discord.Embed(title='NAME NOT FOUND',description = message,color=0xFF0000)
-              await ctx.channel.send(embed=name_embed)
-            else:
-              attendance_file.write(f"{dkp_name}\t{tick_value}")
-              
-          attendance_file.close()
-          raid_time = datetime.datetime.now().strftime('%D %H:%M')
-          file = discord.File(f_name)
-          attachment_message = f"Attendance taken in {channel_name} for {raid_mob} at {raid_time}. \n {len(channel.members)} nerds accounted for."
+          if not char:
+            message = "Discord name " + member_name + " was not found in the mapping."
+            name_embed = discord.Embed(title='NAME NOT FOUND',description = message,color=0xFF0000)
+            await ctx.channel.send(embed=name_embed)
+          else:
+            attendance_file.write(f"{dkp_name}\t{tick_value}")
+            
+        attendance_file.close()
+        raid_time = datetime.datetime.now().strftime('%D %H:%M')
+        file = discord.File(f_name)
+        attachment_message = f"Attendance taken in {channel_name} for {raid_mob} at {raid_time}. \n {len(channel.members)} nerds accounted for."
 
-          print('Taking attendance for '+guild_name+'.')
-          print(attachment_message)
+        print('Taking attendance for '+guild_name+'.')
+        print(attachment_message)
 
-          await ctx.send(file=file, content=attachment_message)
-          return
+        await ctx.send(file=file, content=attachment_message)
+        return
 
 bot.run(TOKEN)
