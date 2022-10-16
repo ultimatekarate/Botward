@@ -133,7 +133,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         attendance_file.close()
         raid_time = datetime.datetime.now().strftime('%D %H:%M')
         file = discord.File(full_path)
-        attachment_message = f"Attendance taken in {channel_name} for {raid_mob} at {raid_time}. \n {len(channel.members)} nerds accounted for."
+        attachment_message = f"Attendance taken in {channel_name} for {tick_type} at {raid_time}. \n {len(channel.members)} nerds accounted for."
 
         print('Taking attendance for '+guild_name+'.')
         print(attachment_message)
