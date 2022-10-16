@@ -128,7 +128,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
             name_embed = discord.Embed(title='NAME NOT FOUND',description = message,color=0xFF0000)
             await ctx.channel.send(embed=name_embed)
           else:
-            attendance_file.write(f"{dkp_name}\t{tick_value}")
+            attendance_file.write(f"{dkp_name},{tick_value}\n")
             
         attendance_file.close()
         raid_time = datetime.datetime.now().strftime('%D %H:%M')
