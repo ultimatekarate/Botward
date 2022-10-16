@@ -108,7 +108,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         f_name = f'{tick_type}_{raid_time}.csv'
 
         full_path = f_path + f_name
-        if os.path.exists(f_path):
+        if not os.path.exists(f_path):
           os.makedirs(f_path)
           
         attendance_file = open(full_path,'w+')
