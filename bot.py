@@ -141,4 +141,15 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         await ctx.send(file=file, content=attachment_message)
         return
 
+@bot.command(pass_context=True)
+async def kovah_special(ctx,raid_name=None):
+  guild_name = ctx.guild.name.replace(" ","")
+
+  if guild_name == 'Paragon':
+    pass
+  else:
+    message = "This function can only be used by members of Paragon."
+    name_embed = discord.Embed(title='HOW DARE YOU?!',description = message,color=0xFF0000)
+    await ctx.channel.send(embed=name_embed)
+
 bot.run(TOKEN)
