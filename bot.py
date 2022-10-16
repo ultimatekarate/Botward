@@ -102,9 +102,9 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
     for channel in ctx.guild.voice_channels:
       if channel.name == channel_name:
         raid_time = datetime.datetime.now().strftime('%m-%d-%y_%H:%M')
-        #f_path = f'/home/container/attendance_logs/{guild_name}/{raid_mob}/'
+        f_path = f'/home/container/attendance_logs/{guild_name}/{raid_mob}/'
 
-        f_path = f'/attendance_logs/{guild_name}/{raid_mob}/'
+        #f_path = f'/attendance_logs/{guild_name}/{raid_mob}/'
         f_name = f'{tick_type}_{raid_time}.csv'
 
         full_path = f_path + f_name
