@@ -144,9 +144,20 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
 @bot.command(pass_context=True)
 async def kovah_special(ctx,raid_name=None):
   guild_name = ctx.guild.name.replace(" ","")
-
+  raid_path = f'/home/container/attendance_logs/{guild_name}/{raid_name}/'
   if guild_name == 'Paragon':
-    pass
+    if raid_name is None:
+      message = "Use the following command to take aggregate attendance: \n **!kovah_special \"<raid name>\"**"
+      name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+
+    if os.path.exists(raid_path):
+      pass
+    else:
+      message = f"{raid_name} is not a valid raid."
+      name_embed = discord.Embed(title='Raid does not exist!',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+
   else:
     message = "This function can only be used by members of Paragon."
     name_embed = discord.Embed(title='HOW DARE YOU?!',description = message,color=0xFF0000)
