@@ -175,7 +175,12 @@ async def kovah_special(ctx,raid_name=None):
       ontime_df['raidend'] = raidend_df[1]
 
       ontime_df.to_csv(raid_path+'aggregate.csv',header=None,index=None,mode='w+')
+      file = discord.File(raid_path+'aggregate.csv')
+      attachment_message = f"Finalizing dkp for {raid_name}. Good work."
 
+      print('Taking attendance for '+guild_name+'.')
+
+      await ctx.send(file=file, content=attachment_message)
 
     else:
       message = f"{raid_name} is not a valid raid."
