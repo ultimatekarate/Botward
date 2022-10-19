@@ -144,12 +144,12 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         return
 
 @bot.command(pass_context=True)
-async def kovah_special(ctx,raid_name=None):
+async def totaldkp(ctx,raid_name=None):
   guild_name = ctx.guild.name.replace(" ","")
   raid_path = f'/home/container/attendance_logs/{guild_name}/{raid_name}/'
   if guild_name == 'Paragon' or 'BGToolsTestServer':
     if raid_name is None:
-      message = "Use the following command to take aggregate attendance: \n **!kovah_special \"<raid name>\"**"
+      message = "Use the following command to take aggregate attendance: \n **!totaldkp \"<raid name>\"**"
       name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
       await ctx.channel.send(embed=name_embed)
 
@@ -178,7 +178,7 @@ async def kovah_special(ctx,raid_name=None):
       file = discord.File(raid_path+'aggregate.csv')
       attachment_message = f"Finalizing dkp for {raid_name}. Good work."
 
-      print('Taking attendance for '+guild_name+'.')
+      print('Computing total dkp earned '+guild_name+'.')
 
       await ctx.send(file=file, content=attachment_message)
 
