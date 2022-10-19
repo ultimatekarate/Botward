@@ -162,9 +162,9 @@ async def kovah_special(ctx,raid_name=None):
       raidend = [x for x in log_files if x.startswith('raidend')]
 
       for x in ontime:
-        ontime_df = pd.read_csv(x)
+        ontime_df = pd.read_csv(raid_path+x)
 
-      dfs={ x : pd.DataFrame.fsrom_csv(x,sep=',',
+      dfs={ x : pd.DataFrame.from_csv(raid_path+x,sep=',',
       header=None,index_col=None) for x in hourly} # n files.
       panel=pd.Panel(dfs)
       dfs_sum=panel.sum(axis=0)
