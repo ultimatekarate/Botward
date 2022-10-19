@@ -156,9 +156,9 @@ async def kovah_special(ctx,raid_name=None):
       # Find all files
       log_files = os.listdir(raid_path)
 
-      ontime = [x.startswith('ontime') for x in log_files]
-      hourly = [x.startswith('hourly') for x in log_files]
-      raidend = [x.startswith('raidend') for x in log_files]
+      ontime  = [x for x in log_files if x.startswith('ontime')]
+      hourly  = [x for x in log_files if x.startswith('hourly')]
+      raidend = [x for x in log_files if x.startswith('raidend')]
 
       print(ontime)
       print(hourly)
