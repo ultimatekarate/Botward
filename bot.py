@@ -2,6 +2,7 @@
 import os
 import json
 import datetime
+import pandas as pd
 from dotenv import load_dotenv
 
 import sys
@@ -160,9 +161,15 @@ async def kovah_special(ctx,raid_name=None):
       hourly  = [x for x in log_files if x.startswith('hourly')]
       raidend = [x for x in log_files if x.startswith('raidend')]
 
-      print(ontime)
-      print(hourly)
-      print(raidend)
+      for x in ontime:
+        ontime_df = pd.read_csv(x)
+
+      dfs={ x : pd.DataFrame.fsrom_csv(x,sep=',',
+      header=None,index_col=None) for x in hourly} # n files.
+      panel=pd.Panel(dfs)
+      dfs_sum=panel.sum(axis=0)
+
+      print(dfs)
 
     else:
       message = f"{raid_name} is not a valid raid."
