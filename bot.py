@@ -164,7 +164,9 @@ async def kovah_special(ctx,raid_name=None):
       for x in ontime:
         ontime_df = pd.read_csv(raid_path+x,header=None)
 
-      print([list(pd.read_csv(raid_path+x,header=None)[1]) for x in hourly])
+      hourly_dkp_ticks = [list(pd.read_csv(raid_path+x,header=None)[1]) for x in hourly]
+      total_hourly_dkp = [sum(x) for x in zip(*hourly_dkp_ticks)]
+      print(total_hourly_dkp)
 
 
     else:
