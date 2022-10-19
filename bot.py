@@ -164,12 +164,8 @@ async def kovah_special(ctx,raid_name=None):
       for x in ontime:
         ontime_df = pd.read_csv(raid_path+x)
 
-      dfs={ x : pd.read_csv(raid_path+x,sep=',',
-      header=None,index_col=None) for x in hourly} # n files.
-      panel=pd.Panel(dfs)
-      dfs_sum=panel.sum(axis=0)
+      print([sum(x) for x in zip([pd.read_csv(raid_path+x)[1] for x in hourly])])
 
-      print(dfs)
 
     else:
       message = f"{raid_name} is not a valid raid."
