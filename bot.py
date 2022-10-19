@@ -162,9 +162,9 @@ async def kovah_special(ctx,raid_name=None):
       raidend = [x for x in log_files if x.startswith('raidend')]
 
       for x in ontime:
-        ontime_df = pd.read_csv(raid_path+x)
+        ontime_df = pd.read_csv(raid_path+x,header=None)
 
-      print([pd.read_csv(raid_path+x) for x in hourly])
+      print([pd.read_csv(raid_path+x,header=None) for x in hourly])
 
 
     else:
