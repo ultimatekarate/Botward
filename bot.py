@@ -93,6 +93,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
       name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
       await ctx.channel.send(embed=name_embed)
       return
+
     if tick_type not in ['hourly', 'ontime', 'raidend']:
       message = "tick type must be one of the following: **hourly, ontime, raidend**"
       name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
@@ -145,14 +146,24 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
 async def kovah_special(ctx,raid_name=None):
   guild_name = ctx.guild.name.replace(" ","")
   raid_path = f'/home/container/attendance_logs/{guild_name}/{raid_name}/'
-  if guild_name == 'Paragon':
+  if guild_name == 'Paragon' or 'BGToolsTestServer':
     if raid_name is None:
       message = "Use the following command to take aggregate attendance: \n **!kovah_special \"<raid name>\"**"
       name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
       await ctx.channel.send(embed=name_embed)
 
     if os.path.exists(raid_path):
-      pass
+      # Find all files
+      log_files = os.listdir(raid_path)
+
+      ontime = [x.startswith('ontime') for x in log_files]
+      hourly = [x.startswith('hourly') for x in log_files]
+      raidend = [x.startswith('raidend') for x in log_files]
+
+      print(ontime)
+      print(hourly)
+      print(raidend)
+
     else:
       message = f"{raid_name} is not a valid raid."
       name_embed = discord.Embed(title='Raid does not exist!',description=message,color=0xFF0000)
