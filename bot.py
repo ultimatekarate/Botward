@@ -174,7 +174,8 @@ async def kovah_special(ctx,raid_name=None):
 
       ontime_df['raidend'] = raidend_df[1]
 
-      print(ontime_df)
+      ontime_df.to_csv(raid_path+'aggregate.csv',header=None,index=None,mode='w+')
+
 
     else:
       message = f"{raid_name} is not a valid raid."
