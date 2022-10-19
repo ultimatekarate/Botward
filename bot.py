@@ -164,7 +164,7 @@ async def kovah_special(ctx,raid_name=None):
       for x in ontime:
         ontime_df = pd.read_csv(raid_path+x,header=None)
 
-      print([z for z in zip([list(x) for x in [pd.read_csv(raid_path+x,header=None)[1] for x in hourly]])])
+      print([z for z in zip([x for x in [pd.read_csv(raid_path+x,header=None)[1] for x in hourly]])])
 
 
     else:
