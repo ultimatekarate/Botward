@@ -164,10 +164,17 @@ async def kovah_special(ctx,raid_name=None):
       for x in ontime:
         ontime_df = pd.read_csv(raid_path+x,header=None)
 
+      ontime_df.columns = ['discord_name', 'ontime']
       hourly_dkp_ticks = [list(pd.read_csv(raid_path+x,header=None)[1]) for x in hourly]
       total_hourly_dkp = [sum(x) for x in zip(*hourly_dkp_ticks)]
-      print(total_hourly_dkp)
+      ontime_df['hourly'] = total_hourly_dkp
 
+      for x in raidend:
+        raidend_df = pd.read_csv(raid_path+x,header=None)
+
+      ontime_df['raidend'] = raidend_df[1]
+
+      print(ontime_df)
 
     else:
       message = f"{raid_name} is not a valid raid."
