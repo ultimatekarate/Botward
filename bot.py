@@ -214,7 +214,7 @@ async def gnometoss(ctx,reason='they deserve it'):
   target = random.choice(ctx.guild.members).mention
   tstring = f'{ctx.author.nick} tosses a gnome at {target} because {reason}!'
 
-  gnometoss_embed = discord.Embed(title='INCOMING GNOME! DUCK OR DIE!', description=tstring, color=0x8ee6dd)
+  gnometoss_embed = discord.Embed(title='INCOMING GNOME!', description=tstring, color=0x9028b0)
   await ctx.channel.send(embed=gnometoss_embed)
 
 @bot.command(pass_context=True)
