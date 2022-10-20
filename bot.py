@@ -3,6 +3,8 @@ import os
 import json
 import datetime
 import pandas as pd
+import random
+
 from dotenv import load_dotenv
 
 import sys
@@ -203,8 +205,15 @@ async def make_mappingfile(ctx):
   guild_name = ctx.guild.name.replace(" ","")
   with open(f"/home/container/character_mapping/{guild_name}.json","w+") as mapfile:
     json.dump(sorted_dict, mapfile)
-  
+
   return
+
+@bot.command(pass_context=True)
+@is_paragon()
+async def gnometoss(ctx,reason='because they deserve it.'):
+  target = random.choice(ctx.server.members).mention
+  tstring = f'{ctx.author} tosses a gnome at {target} because {reason}!'
+  await ctx.channel.send(content=tstring)
 
 @bot.command(pass_context=True)
 @is_paragon()
