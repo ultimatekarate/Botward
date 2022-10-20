@@ -145,8 +145,8 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
 
 @bot.command(pass_context = True)
 async def listroles(ctx):
-  print(ctx.author.roles)
-  await ctx.channel.send(content=ctx.author.roles)
+  roles = [x.name for x in ctx.author.roles]
+  await ctx.channel.send(content=roles)
 
 @bot.command(pass_context=True)
 async def totaldkp(ctx,raid_name=None):
