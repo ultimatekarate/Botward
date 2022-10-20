@@ -211,9 +211,7 @@ async def make_mappingfile(ctx):
 @bot.command(pass_context=True)
 #@is_paragon()
 async def gnometoss(ctx,reason='they deserve it'):
-  online_nerds = [x for x in ctx.guild.members if x.status == 'online']
-
-  target = random.choice(online_nerds).mention
+  target = random.choice(ctx.guild.members).mention
   tstring = f'{ctx.author.nick} tosses a gnome at {target} because {reason}!'
 
   gnometoss_embed = discord.Embed(title='INCOMING GNOME!', description=tstring, color=0x9028b0)
