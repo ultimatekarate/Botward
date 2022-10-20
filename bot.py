@@ -209,9 +209,9 @@ async def make_mappingfile(ctx):
   return
 
 @bot.command(pass_context=True)
-@is_paragon()
+#@is_paragon()
 async def gnometoss(ctx,reason='they deserve it.'):
-  target = random.choice(ctx.server.members).mention
+  target = random.choice(ctx.guild.members).mention
   tstring = f'{ctx.author.nick} tosses a gnome at {target} because {reason}!'
   await ctx.channel.send(content=tstring)
 
