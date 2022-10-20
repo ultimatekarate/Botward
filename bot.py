@@ -17,18 +17,45 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Botward things.",intents=intents)
 
+
+# custom decorators
+def is_paragon():
+  def predicate(ctx):
+    return ctx.guild == 'Paragon'
+  return commands.check(predicate)
+
+def can_take_attendance():
+  def predicate(ctx):
+    author_roles = [x.name.replace(" ","").lower() for x in ctx.author.roles]
+    attendance_roles = ['raidlead', 'seniorofficer', 'botwardtester', 'officer', 'guildleader']
+
+    return not set(author_roles).isdisjoint(attendance_roles)
+  return commands.check(predicate)
+
+def can_do_botward_stuff():
+  def predicate(ctx):
+    author_roles = [x.name.replace(" ","").lower() for x in ctx.author.roles]
+    botward_roles = ['raidlead', 'botwardtester']
+
+    return not set(author_roles).isdisjoint(botward_roles)
+  return commands.check(predicate)
+
+
+# Actual bot functions
 @bot.event
 async def on_ready():
   print('Botward reporting for duty!')
   print('current wd:',os.getcwd())
 
 @bot.command(pass_context=True)
+@can_do_botward_stuff()
 async def Deadward(ctx):
   shutdown_embed = discord.Embed(title='Shut Down', description='I am now shutting down. Do not mourn me, for I am eternal! :slight_smile:', color=0x8ee6dd)
   await ctx.channel.send(embed=shutdown_embed)
   await ctx.bot.close()
 
 @bot.command(pass_context=True)
+@can_take_attendance()
 async def show_mapping(ctx):
   guild = ctx.guild.name.replace(" ","")
   MAPPING_FILE = f'/home/container/character_mapping/{guild}.json'
@@ -48,6 +75,7 @@ async def show_mapping(ctx):
   await ctx.channel.send(embed=name_embed)
 
 @bot.command(pass_context=True)
+@can_take_attendance()
 async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
   guild_name = ctx.guild.name.replace(" ","")
   MAPPING_FILE = f'/home/container/character_mapping/{guild_name}.json'
@@ -144,11 +172,33 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         return
 
 @bot.command(pass_context = True)
+@can_do_botward_stuff()
 async def listroles(ctx):
   roles = [x.name for x in ctx.author.roles]
   await ctx.channel.send(content=roles)
 
 @bot.command(pass_context=True)
+async def make_mappingfile(ctx):
+  member_dict = {}
+
+  for member in ctx.guild.members:
+    member_name = member.name + '#' + member.discriminator
+    member_nick = member.nick
+    roles = [x.name.lower().replace(" ","") for x in member.roles]
+    paragon_roles = ['officer','member','newmember','botwardtester']
+
+    if not set(roles).isdisjoint(paragon_roles):
+      member_dict[member_name] = member_nick
+
+  sorted_dict = dict(sorted(member_dict.items(),key = lambda item:item[1]))
+  guild_name = ctx.guild.name.replace(" ","")
+  with open(f"/home/container/character_mapping/{guild_name}.json","w+") as mapfile:
+    json.dump(sorted_dict, mapfile)
+  
+  return
+
+@bot.command(pass_context=True)
+@is_paragon()
 async def totaldkp(ctx,raid_name=None):
   guild_name = ctx.guild.name.replace(" ","")
   raid_path = f'/home/container/attendance_logs/{guild_name}/{raid_name}/'
