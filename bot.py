@@ -184,6 +184,9 @@ async def make_mappingfile(ctx):
   for member in ctx.guild.members:
     member_name = member.name + '#' + member.discriminator
     member_nick = member.nick
+
+    if member_nick is None:
+      member_nick = member.name
     roles = [x.name.lower().replace(" ","") for x in member.roles]
     paragon_roles = ['officer','member','newmember','botwardtester']
 
