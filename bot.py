@@ -145,7 +145,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
 
 @bot.command(pass_context = True)
 async def listroles(ctx):
-  print(ctx.authot.roles)
+  print(ctx.author.roles)
   await ctx.channel.send(content=ctx.author.roles)
 
 @bot.command(pass_context=True)
