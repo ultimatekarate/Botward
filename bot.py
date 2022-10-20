@@ -143,6 +143,11 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         await ctx.send(file=file, content=attachment_message)
         return
 
+@bot.command(pass_context = True)
+async def listroles(ctx):
+  print(ctx.authot.roles)
+  await ctx.channel.send(content=ctx.author.roles)
+
 @bot.command(pass_context=True)
 async def totaldkp(ctx,raid_name=None):
   guild_name = ctx.guild.name.replace(" ","")
