@@ -189,7 +189,7 @@ async def make_mappingfile(ctx):
 
     if not set(roles).isdisjoint(paragon_roles):
       member_dict[member_name] = member_nick
-
+  print(member_dict)
   sorted_dict = dict(sorted(member_dict.items(),key = lambda item:item[1]))
   guild_name = ctx.guild.name.replace(" ","")
   with open(f"/home/container/character_mapping/{guild_name}.json","w+") as mapfile:
