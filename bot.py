@@ -40,6 +40,10 @@ def can_do_botward_stuff():
     return not set(author_roles).isdisjoint(botward_roles)
   return commands.check(predicate)
 
+def turn_off():
+  def predicate(ctx):
+    return False
+  return commands.check(predicate)
 
 # Actual bot functions
 @bot.event
@@ -178,6 +182,7 @@ async def listroles(ctx):
   await ctx.channel.send(content=roles)
 
 @bot.command(pass_context=True)
+@turn_off()
 async def make_mappingfile(ctx):
   member_dict = {}
 
@@ -192,6 +197,7 @@ async def make_mappingfile(ctx):
 
     if not set(roles).isdisjoint(paragon_roles):
       member_dict[member_name] = member_nick
+
   print(member_dict)
   sorted_dict = dict(sorted(member_dict.items(),key = lambda item:item[1]))
   guild_name = ctx.guild.name.replace(" ","")
