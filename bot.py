@@ -23,7 +23,7 @@ bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Bot
 # custom decorators
 def is_paragon():
   def predicate(ctx):
-    return ctx.guild == 'Paragon'
+    return ctx.guild.name == 'Paragon'
   return commands.check(predicate)
 
 def can_take_attendance():
