@@ -121,26 +121,21 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         print(attachment_message)
 
         await ctx.send(file=file, content=attachment_message)
-        return
-  if guild_name == 'Paragon' or 'BGToolsTestServer':
+  else:
     if channel_name is None or raid_mob is None or tick_type is None:
       message = "Use the following command to take attendance: \n **!attendance \"<voice channel>\" \"<raid name>\"  \"<tick type>\"**"
       name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
       await ctx.channel.send(embed=name_embed)
-      return
 
     if tick_type not in ['hourly', 'ontime', 'raidend']:
       message = "tick type must be one of the following: **hourly, ontime, raidend**"
       name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
       await ctx.channel.send(embed=name_embed)
-      return
 
     for channel in ctx.guild.voice_channels:
       if channel.name == channel_name:
         raid_time = datetime.datetime.now().strftime('%m-%d-%y_%H:%M')
         f_path = f'/home/container/attendance_logs/{guild_name}/{raid_mob}/'
-
-        #f_path = f'/attendance_logs/{guild_name}/{raid_mob}/'
         f_name = f'{tick_type}_{raid_time}.csv'
 
         full_path = f_path + f_name
@@ -152,7 +147,6 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
         members_present = [member.name + '#' + member.discriminator for member in channel.members]
 
         for member_name in CHARACTER_MAPPING:
-
           tick_value = 0
           if member_name in members_present:
             tick_value = 1
@@ -165,7 +159,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
             await ctx.channel.send(embed=name_embed)
           else:
             attendance_file.write(f"{dkp_name},{tick_value}\n")
-            
+
         attendance_file.close()
         raid_time = datetime.datetime.now().strftime('%D %H:%M')
         file = discord.File(full_path)
@@ -176,6 +170,11 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
 
         await ctx.send(file=file, content=attachment_message)
         return
+
+@bot.command(pass_context=True)
+async def botward_diagnostic_tool(ctx):
+  for channel in ctx.guild.voice_channels:
+    print(channel.name)
 
 @bot.command(pass_context = True)
 @can_do_botward_stuff()
@@ -222,7 +221,7 @@ async def gnometoss(ctx,reason='they deserve it'):
   await ctx.channel.send(embed=gnometoss_embed)
 
 @bot.command(pass_context=True)
-@is_paragon()
+#@is_paragon()
 async def totaldkp(ctx,raid_name=None):
   guild_name = ctx.guild.name.replace(" ","")
   raid_path = f'/home/container/attendance_logs/{guild_name}/{raid_name}/'
