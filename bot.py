@@ -91,7 +91,7 @@ async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
   CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
 
   voice_channels = [channel.name for channel in ctx.guild.voice_channels]
-  channel_list = voice_channels.join(', ')
+  channel_list = ",".join(voice_channels)
 
   if channel_name not in voice_channels:
     message = f"The voice channel {channel_name} was not found. Choose one of the following: {channel_list}."
