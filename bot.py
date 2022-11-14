@@ -2,7 +2,12 @@
 import os
 import json
 import datetime
+import pandas as pd
+import random
+
 from dotenv import load_dotenv
+
+import sys
 
 import discord
 from discord import ChannelType
@@ -10,74 +15,62 @@ from discord.ext import commands
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = [guild for guild in os.getenv('DISCORD_GUILD').split(',')]
-MAPPING_FILE = 'character_mapping.json'
 
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix='!', description="I am Botward. I am doing Botward things.",intents=intents)
 
-CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
-EMBEZZLE_FLAG = True
 
-QUESTIONS = {'Botward, what is your opinion of SBAs?':'SBAs can fuck all the way off!',
-'Botward, do you posses karate?':'My karate is _ultimate_',
-'Botward, what is Xaiterlyn screaming in discord?':'Some nonsense about putting horses in corners.',
-'Botward, what is the guild motto?':'Fuck it, let\'s see what happens!',
-'Botward, who is the guild #1 sk?':'Tugmuk, obviously.',
-'Botward, what is concussion?':'Literally the best spell in the game.',
-'Botward, who pulled that train?':'Fayne.',
-'Botward, who is the #1 druid?':'Grimmskld. The real one, not the bootleg Fayne version.',
-'Botward, who is that handsome-ass high elf?':'Arther. :heart_eyes: :heart_eyes: :heart_eyes:  ',
-'Botward, who is the biggest tool in BG?': 'It is a violation of guild rules to answer this. (But we all know it\'s Bakastabs- respectfully, of course.)',
-'Botward, can Bakamez\'s assist please get a malo?':'No, the Malo nerds are on strike.',
-'Botward, what did Emptyplate just say?':'Sorry, I am unable to parse unitelligible grumbling.',
-'Botward, does this situation require more blasting?':'All situations require blasting.',
-'Botward, who should own the means of production?':'The workers, obviously. They have nothing to lose but their chains.'}
+# custom decorators
+def is_paragon():
+  def predicate(ctx):
+    return ctx.guild.name == 'Paragon'
+  return commands.check(predicate)
 
+def can_take_attendance():
+  def predicate(ctx):
+    author_roles = [x.name.replace(" ","").lower() for x in ctx.author.roles]
+    attendance_roles = ['raidlead', 'seniorofficer', 'botwardtester', 'officer', 'guildleader']
+
+    return not set(author_roles).isdisjoint(attendance_roles)
+  return commands.check(predicate)
+
+def can_do_botward_stuff():
+  def predicate(ctx):
+    author_roles = [x.name.replace(" ","").lower() for x in ctx.author.roles]
+    botward_roles = ['raidlead', 'botwardtester']
+
+    return not set(author_roles).isdisjoint(botward_roles)
+  return commands.check(predicate)
+
+def turn_off():
+  def predicate(ctx):
+    return False
+  return commands.check(predicate)
+
+# Actual bot functions
 @bot.event
 async def on_ready():
   print('Botward reporting for duty!')
   print('current wd:',os.getcwd())
 
 @bot.command(pass_context=True)
-async def tosh(ctx):
-  await ctx.channel.send("Dark elf warriors are #1!")
-
-@bot.command(pass_context=True)
-async def motto(ctx):
-  embed_message = discord.Embed(title='BLOOD GUARD MOTTO',description='**FUCK IT, LET\'S SEE WHAT HAPPENS!**',color=0xDD1200)
-  await ctx.channel.send(embed=embed_message)
-
-@bot.command(pass_context=True)
+@can_do_botward_stuff()
 async def Deadward(ctx):
   shutdown_embed = discord.Embed(title='Shut Down', description='I am now shutting down. Do not mourn me, for I am eternal! :slight_smile:', color=0x8ee6dd)
   await ctx.channel.send(embed=shutdown_embed)
   await ctx.bot.close()
 
-@bot.event
-async def on_message(message):
-  if message.content in QUESTIONS:
-    await message.reply(QUESTIONS[message.content])
-
-  await bot.process_commands(message)
-
 @bot.command(pass_context=True)
-async def questions(ctx):
-  message = '\n'.join(QUESTIONS)
-  embed = discord.Embed(title='BOTWARD\'S SECRET KNOWLEDGE',description=message,color=0xFF000)
-  await ctx.channel.send(embed=embed)
-
-@bot.command(pass_context=True)
-async def reload_mapping(ctx):
-  # This function reloads the character mapping file.
-  global CHARACTER_MAPPING
-  CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
-  message = "Character mapping has been updated."
-  name_embed = discord.Embed(title='MAPPING UPDATE',description=message,color=0x00FF00)
-  await ctx.channel.send(embed=name_embed)
-
-@bot.command(pass_context=True)
+@can_take_attendance()
 async def show_mapping(ctx):
+  guild = ctx.guild.name.replace(" ","")
+  MAPPING_FILE = f'/home/container/character_mapping/{guild}.json'
+
+  if sys.platform == 'win32':
+    MAPPING_FILE =  f'/character_mapping/{guild}.json'
+  
+  CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
+
   mapping_list = []
   for member_name in sorted(CHARACTER_MAPPING,key=CHARACTER_MAPPING.get):
     temp_str=member_name+':'+CHARACTER_MAPPING[member_name]
@@ -88,8 +81,24 @@ async def show_mapping(ctx):
   await ctx.channel.send(embed=name_embed)
 
 @bot.command(pass_context=True)
-async def attendance(ctx, channel_name=None, raid_mob=None):
+@can_take_attendance()
+async def attendance(ctx, channel_name=None, raid_mob=None, tick_type=None):
+  guild_name = ctx.guild.name.replace(" ","")
+  MAPPING_FILE = f'/home/container/character_mapping/{guild_name}.json'
+  if sys.platform == 'win32':
+    MAPPING_FILE =  f'character_mapping/{guild_name}.json'
 
+  CHARACTER_MAPPING = json.load(open(MAPPING_FILE))
+
+  voice_channels = [channel.name for channel in ctx.guild.voice_channels]
+  channel_list = ", ".join(voice_channels)
+
+  if channel_name not in voice_channels:
+    message = f"The voice channel {channel_name} was not found. Choose one of the following: {channel_list}."
+    name_embed = discord.Embed(title='VOICE CHANNEL NOT FOUND',description = message,color=0xFF0000)
+    await ctx.channel.send(embed=name_embed)
+
+  if guild_name == 'BloodGuard':
     if channel_name is None or raid_mob is None:
       message = "Use the following command to take attendance: \n **!attendance \"<voice channel>\" \"<raid mob>\"**"
       name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
@@ -97,25 +106,176 @@ async def attendance(ctx, channel_name=None, raid_mob=None):
       return
 
     for channel in ctx.guild.voice_channels:
-        if channel.name == channel_name:
-            f_name = '/home/container/attendance_logs/'+raid_mob+'.csv'
-            attendance_file = open(f_name,'w+')
+      if channel.name == channel_name:
+        f_name = f'/home/container/attendance_logs/{guild_name}/'+raid_mob+'.csv'
+        attendance_file = open(f_name,'w+')
 
-            for member in channel.members:
-              member_name = member.name + '#' + member.discriminator
-              char = CHARACTER_MAPPING.get(member_name)
-              if not char:
-                message = "Discord name " + member_name + " was not found in the mapping."
-                name_embed = discord.Embed(title='NAME NOT FOUND',description = message,color=0xFF0000)
-                await ctx.channel.send(embed=name_embed)
-              else:
-                attendance_file.write(f"1\t{char}\t65\tBard\tYes\n")
+        for member in channel.members:
+          member_name = member.name + '#' + member.discriminator
+          char = CHARACTER_MAPPING.get(member_name)
+          if not char:
+            message = "Discord name " + member_name + " was not found in the mapping."
+            name_embed = discord.Embed(title='NAME NOT FOUND',description = message,color=0xFF0000)
+            await ctx.channel.send(embed=name_embed)
+          else:
+            attendance_file.write(f"1\t{char}\t65\tBard\tYes\n")
             
-            attendance_file.close()
-            raid_time = datetime.datetime.now().strftime('%D %H:%M')
-            file = discord.File(f_name)
-            attachment_message = "Attendance taken in "+channel_name+" for "+ raid_mob + " at "+str(raid_time)+". \n" + str(len(channel.members)) + " nerds accounted for."
-            await ctx.send(file=file, content=attachment_message)
-              
+        attendance_file.close()
+        raid_time = datetime.datetime.now().strftime('%D %H:%M')
+        file = discord.File(f_name)
+        attachment_message = "Attendance taken in "+channel_name+" for "+ raid_mob + " at "+str(raid_time)+". \n" + str(len(channel.members)) + " nerds accounted for."
+
+        print('Taking attendance for '+guild_name+'.')
+        print(attachment_message)
+
+        await ctx.send(file=file, content=attachment_message)
+  else:
+    if channel_name is None or raid_mob is None or tick_type is None:
+      message = "Use the following command to take attendance: \n **!attendance \"<voice channel>\" \"<raid name>\"  \"<tick type>\"**"
+      name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+
+    if tick_type not in ['hourly', 'ontime', 'raidend']:
+      message = "tick type must be one of the following: **hourly, ontime, raidend**"
+      name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+
+    for channel in ctx.guild.voice_channels:
+      if channel.name == channel_name:
+        raid_time = datetime.datetime.now().strftime('%m-%d-%y_%H:%M')
+        f_path = f'/home/container/attendance_logs/{guild_name}/{raid_mob}/'
+        f_name = f'{tick_type}_{raid_time}.csv'
+
+        full_path = f_path + f_name
+        if not os.path.exists(f_path):
+          os.makedirs(f_path)
+          
+        attendance_file = open(full_path,'w+')
+
+        members_present = [member.name + '#' + member.discriminator for member in channel.members]
+
+        for member_name in CHARACTER_MAPPING:
+          tick_value = 0
+          if member_name in members_present:
+            tick_value = 1
+
+          dkp_name = CHARACTER_MAPPING.get(member_name)
+
+          if not dkp_name:
+            message = "Discord name " + member_name + " was not found in the mapping."
+            name_embed = discord.Embed(title='NAME NOT FOUND',description = message,color=0xFF0000)
+            await ctx.channel.send(embed=name_embed)
+          else:
+            attendance_file.write(f"{dkp_name},{tick_value}\n")
+
+        attendance_file.close()
+        raid_time = datetime.datetime.now().strftime('%D %H:%M')
+        file = discord.File(full_path)
+        attachment_message = f"Attendance taken in {channel_name} for {tick_type} at {raid_time}. \n {len(channel.members)} nerds accounted for."
+
+        print('Taking attendance for '+guild_name+'.')
+        print(attachment_message)
+
+        await ctx.send(file=file, content=attachment_message)
+        return
+
+@bot.command(pass_context=True)
+async def botward_diagnostic_tool(ctx):
+  for channel in ctx.guild.voice_channels:
+    print(channel.name)
+
+@bot.command(pass_context = True)
+@can_do_botward_stuff()
+async def listroles(ctx):
+  roles = [x.name for x in ctx.author.roles]
+  await ctx.channel.send(content=roles)
+
+@bot.command(pass_context=True)
+@turn_off()
+async def make_mappingfile(ctx):
+  member_dict = {}
+
+  for member in ctx.guild.members:
+    member_name = member.name + '#' + member.discriminator
+    member_nick = member.nick
+
+    if member_nick is None:
+      member_nick = member.name
+    roles = [x.name.lower().replace(" ","") for x in member.roles]
+    paragon_roles = ['officer','member','newmember','botwardtester']
+
+    if not set(roles).isdisjoint(paragon_roles):
+      member_dict[member_name] = member_nick
+
+  print(member_dict)
+  sorted_dict = dict(sorted(member_dict.items(),key = lambda item:item[1]))
+  guild_name = ctx.guild.name.replace(" ","")
+  with open(f"/home/container/character_mapping/{guild_name}.json","w+") as mapfile:
+    json.dump(sorted_dict, mapfile)
+
+  return
+
+@bot.command(pass_context=True)
+#@is_paragon()
+async def gnometoss(ctx,reason='they deserve it'):
+  target = random.choice(ctx.guild.members).mention
+  tosser = ctx.author.nick
+
+  if tosser is None:
+    tosser = ctx.author.name
+  tstring = f'{tosser} tosses a gnome at {target} because {reason}!'
+
+  gnometoss_embed = discord.Embed(title='INCOMING GNOME!', description=tstring, color=0x9028b0)
+  await ctx.channel.send(embed=gnometoss_embed)
+
+@bot.command(pass_context=True)
+#@is_paragon()
+async def totaldkp(ctx,raid_name=None):
+  guild_name = ctx.guild.name.replace(" ","")
+  raid_path = f'/home/container/attendance_logs/{guild_name}/{raid_name}/'
+  if guild_name == 'Paragon' or 'BGToolsTestServer':
+    if raid_name is None:
+      message = "Use the following command to take aggregate attendance: \n **!totaldkp \"<raid name>\"**"
+      name_embed = discord.Embed(title='MISSING ARGUMENTS',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+
+    if os.path.exists(raid_path):
+      # Find all files
+      log_files = os.listdir(raid_path)
+
+      ontime  = [x for x in log_files if x.startswith('ontime')]
+      hourly  = [x for x in log_files if x.startswith('hourly')]
+      raidend = [x for x in log_files if x.startswith('raidend')]
+
+      for x in ontime:
+        ontime_df = pd.read_csv(raid_path+x,header=None)
+
+      ontime_df.columns = ['discord_name', 'ontime']
+      hourly_dkp_ticks = [list(pd.read_csv(raid_path+x,header=None)[1]) for x in hourly]
+      total_hourly_dkp = [sum(x) for x in zip(*hourly_dkp_ticks)]
+      ontime_df['hourly'] = total_hourly_dkp
+
+      for x in raidend:
+        raidend_df = pd.read_csv(raid_path+x,header=None)
+
+      ontime_df['raidend'] = raidend_df[1]
+
+      ontime_df.to_csv(raid_path+'aggregate.csv',header=None,index=None,mode='w+')
+      file = discord.File(raid_path+'aggregate.csv')
+      attachment_message = f"Finalizing dkp for {raid_name}. Good work."
+
+      print('Computing total dkp earned '+guild_name+'.')
+
+      await ctx.send(file=file, content=attachment_message)
+
+    else:
+      message = f"{raid_name} is not a valid raid."
+      name_embed = discord.Embed(title='Raid does not exist!',description=message,color=0xFF0000)
+      await ctx.channel.send(embed=name_embed)
+
+  else:
+    message = "This function can only be used by members of Paragon."
+    name_embed = discord.Embed(title='HOW DARE YOU?!',description = message,color=0xFF0000)
+    await ctx.channel.send(embed=name_embed)
 
 bot.run(TOKEN)
