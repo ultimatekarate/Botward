@@ -29,7 +29,7 @@ def is_paragon():
 def can_take_attendance():
   def predicate(ctx):
     author_roles = [x.name.replace(" ","").lower() for x in ctx.author.roles]
-    attendance_roles = ['raidlead', 'seniorofficer', 'botwardtester', 'officer', 'guildleader']
+    attendance_roles = ['raidlead', 'seniorofficer', 'botwardtester', 'officer', 'guildleader', 'recruitmentofficer']
 
     return not set(author_roles).isdisjoint(attendance_roles)
   return commands.check(predicate)
